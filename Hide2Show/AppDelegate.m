@@ -39,6 +39,17 @@
   [statusBar removeStatusItem:self.item];
 }
 
+- (void)applicationDidBecomeActive:(NSNotification *)notification {
+  NSLog(@"become active");
+}
+
+// Hide2Show失去焦点（点击了别的应用）
+- (void)applicationDidResignActive:(NSNotification *)notification {
+  NSLog(@"resign active");
+  [self.popover close];
+  self.isShow = false;
+}
+
 // 通过状态栏icon实现显示窗口
 - (IBAction)itemAction:(id)sender {
 //  // 主窗口显示
@@ -51,6 +62,8 @@
   
     if (!self.isShow) {
       [self.popover showRelativeToRect:NSZeroRect ofView:[self item].button preferredEdge:NSRectEdgeMinY];
+      //激活应用到前台(如果应用窗口处于非活动状态)
+      [[NSRunningApplication currentApplication] activateWithOptions:(NSApplicationActivateAllWindows | NSApplicationActivateIgnoringOtherApps)];
     } else {
       [self.popover close];
     }
