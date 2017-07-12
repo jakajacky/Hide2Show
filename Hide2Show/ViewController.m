@@ -35,6 +35,12 @@
   
 }
 
+#pragma mark - 退出应用
+- (IBAction)quitBtnDidClicked:(id)sender {
+  [[NSApplication sharedApplication] terminate:self];
+}
+
+
 - (void)setRepresentedObject:(id)representedObject {
   [super setRepresentedObject:representedObject];
 
