@@ -41,6 +41,7 @@
 
 - (void)applicationDidBecomeActive:(NSNotification *)notification {
   NSLog(@"become active");
+  
 }
 
 // Hide2Show失去焦点（点击了别的应用）
@@ -58,13 +59,16 @@
 //    [window makeKeyAndOrderFront:self];
 //  }
 //  //激活应用到前台(如果应用窗口处于非活动状态)
-//  [[NSRunningApplication currentApplication] activateWithOptions:(NSApplicationActivateAllWindows | NSApplicationActivateIgnoringOtherApps)];
+  [[NSRunningApplication currentApplication] activateWithOptions:(NSApplicationActivateAllWindows | NSApplicationActivateIgnoringOtherApps)];
   
     if (!self.isShow) {
+      NSLog(@"open");
+      [self setUpPopover]; // 解决存在扩展屏幕情况，在某一刻，某一块屏幕的状态栏上，点击无效的问题
       [self.popover showRelativeToRect:NSZeroRect ofView:[self item].button preferredEdge:NSRectEdgeMinY];
       //激活应用到前台(如果应用窗口处于非活动状态)
       [[NSRunningApplication currentApplication] activateWithOptions:(NSApplicationActivateAllWindows | NSApplicationActivateIgnoringOtherApps)];
     } else {
+      NSLog(@"close");
       [self.popover close];
     }
     self.isShow = !self.isShow;
@@ -72,6 +76,7 @@
 }
 
 -(void) setUpPopover {
+  self.popover = nil;
   self.popover = [[NSPopover alloc] init];
   
   NSStoryboard *storyboard = [NSStoryboard storyboardWithName:@"Main" bundle:[NSBundle mainBundle]];
